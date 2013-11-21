@@ -1,0 +1,39 @@
+#!ipxe
+
+set smartos-build 20131102T215831Z
+
+######## MAIN MENU ###################
+:start
+menu Welcome to iPXE's Boot Menu
+item
+item --gap -- ------------------------- Operating systems ------------------------------
+item smartos    Boot SmartOS (${smartos-build})
+item --gap -- ------------------------------ Utilities ---------------------------------
+item shell      Enter iPXE shell
+item reboot     Reboot
+item
+item exit       Exit (boot local disk)
+choose --default smartos --timeout 30000 target && goto ${target}
+
+
+########## UTILITY ITEMS ####################
+:shell
+echo Type exit to get the back to the menu
+shell
+set menu-timeout 0
+goto start
+
+:reboot
+reboot
+
+:exit
+exit
+
+########## MENU ITEMS #######################
+# SmartOS Root shadow is "root"
+:smartos
+kernel /smartos/${smartos-build}/platform/i86pc/kernel/amd64/unix -B root_shadow='$5$2HOHRnK3$NvLlm.1KQBbB0WjoP7xcIwGnllhzp2HnT.mDO7DpxYA'
+initrd /smartos/${smartos-build}/platform/i86pc/amd64/boot_archive
+boot
+goto start
+
