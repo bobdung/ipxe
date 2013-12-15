@@ -8,6 +8,9 @@ menu Welcome to iPXE's Boot Menu
 item
 item --gap -- ------------------------- Operating systems ------------------------------
 item smartos    Boot SmartOS (${smartos-build})
+item centos     Install centos 6.5
+item centos2    Install centos 6.5 2
+item example	Example
 item --gap -- ------------------------------ Utilities ---------------------------------
 item shell      Enter iPXE shell
 item reboot     Reboot
@@ -37,3 +40,21 @@ initrd /smartos/${smartos-build}/platform/i86pc/amd64/boot_archive
 boot
 goto start
 
+:centos
+set base http://10.0.4.100/centos/6/os/x86_64
+kernel ${base}/images/pxeboot/vmlinuz stage2=${base}/images/install.img ksdevice=${netX/mac}
+initrd ${base}/images/pxeboot/initrd.img
+boot
+goto start
+
+:centos2
+set base http://10.0.4.100/centos/6/os/x86_64
+kernel ${base}/images/pxeboot/vmlinuz repo=${base}
+initrd ${base}/images/pxeboot/initrd.img
+boot
+goto start
+
+:example
+kernel http://boot.ipxe.org/demo/boot.php
+boot
+goto start
