@@ -10,6 +10,9 @@ item --gap -- ------------------------- Operating systems ----------------------
 item smartos    Boot SmartOS (${smartos-build})
 item centos     Install centos 6.5
 item centos2    Install centos 6.5 2
+item fedora	Install Fedora (net install)
+item fedoraks	Install Fedora (net install with kickstart)
+item debian     Install Debian
 item example	Example
 item --gap -- ------------------------------ Utilities ---------------------------------
 item shell      Enter iPXE shell
@@ -51,6 +54,28 @@ goto start
 set base http://10.0.4.100/centos/6/os/x86_64
 kernel ${base}/images/pxeboot/vmlinuz repo=${base}
 initrd ${base}/images/pxeboot/initrd.img
+boot
+goto start
+
+:fedora
+set base http://10.0.4.100/fedora/netinst
+kernel ${base}/images/pxeboot/vmlinuz repo=${base}
+initrd ${base}/images/pxeboot/initrd.img
+boot
+goto start
+
+:fedoraks
+set base http://10.0.4.100/fedora/netinst
+kernel ${base}/images/pxeboot/vmlinuz repo=${base} ks=${base}/ks.cfg
+initrd ${base}/images/pxeboot/initrd.img
+boot
+goto start
+
+:debian
+set base http://10.0.4.100
+kernel ${base}/debian-installer/amd64/linux 
+initrd ${base}/debian-installer/amd64/initrd.gz
+imgargs linux auto=true fb=false url=${base}/debian/preseed.cfg
 boot
 goto start
 
